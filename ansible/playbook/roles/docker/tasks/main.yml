@@ -1,0 +1,39 @@
+---
+# install docker for ubuntu
+
+#- name: Include OS-specific variables
+#  include_vars: "ubuntu.yml"
+
+- name: Install prerequisites for {{ ansible_facts['os_family'] }}
+  apt:
+    name: "{{ item }}"
+    state: latest 
+    update_cache: yes
+  loop: "{{ docker_pkg }}"
+#    - apt-transport-https
+#    - ca-certificates
+#    - curl
+#    - software-properties-common
+
+- name: Add docker gpg key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+
+- name: Add docker api repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    state: present
+  notify: restart docker
+  
+- name: Add docker users to the docker group
+  user:
+    name: "{{ item.name }}"
+    groups: docker
+    append: true
+  with_items:
+    - { name: "{{ remote_user }}" }
+

@@ -7,10 +7,11 @@
 # you're doing.
 
 hostname01 = "ansible-client01"
+hostname02 = "ansible-client02"
 
 Vagrant.configure("2") do |config|
 
-  config.vm.define:hostname01 do |cfg|
+  config.vm.define:"ansible-target01" do |cfg|
     cfg.vm.box = "ubuntu/trusty64" 
     cfg.vm.provider:virtualbox do |vb|
       vb.name = hostname01  # name for vbox
@@ -22,6 +23,17 @@ Vagrant.configure("2") do |config|
     cfg.vm.network "private_network", ip: "192.168.33.10"
   end
 
+  config.vm.define:"ansible-target02" do |cfg|
+    cfg.vm.box = "ubuntu/trusty64" 
+    cfg.vm.provider:virtualbox do |vb|
+      vb.name = hostname02  # name for vbox
+      vb.customize ["modifyvm", :id, "--cpus", 1]
+      vb.customize ["modifyvm", :id, "--memory", 512]
+    end
+    cfg.vm.host_name = hostname02 # name for OS
+    cfg.vm.synced_folder ".", "/vagrant", disabled: true
+    cfg.vm.network "private_network", ip: "192.168.33.20"
+  end
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
