@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     cfg.vm.provider:virtualbox do |vb|
       vb.name = hostname01  # name for vbox
       vb.customize ["modifyvm", :id, "--cpus", 1]
-      vb.customize ["modifyvm", :id, "--memory", 512]
+      vb.customize ["modifyvm", :id, "--memory", 1024]
     end
     cfg.vm.host_name = hostname01 # name for OS
     cfg.vm.synced_folder ".", "/vagrant", disabled: true
@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
     cfg.vm.provider:virtualbox do |vb|
       vb.name = hostname02  # name for vbox
       vb.customize ["modifyvm", :id, "--cpus", 1]
-      vb.customize ["modifyvm", :id, "--memory", 512]
+      vb.customize ["modifyvm", :id, "--memory", 1024]
     end
     cfg.vm.host_name = hostname02 # name for OS
     cfg.vm.synced_folder ".", "/vagrant", disabled: true
